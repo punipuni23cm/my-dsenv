@@ -1,8 +1,9 @@
-FROM ubuntu:latest
+FROM nvidia/cuda:11.1.1-devel-ubuntu20.04
+RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 RUN apt update && apt install -y graphviz libsm6 libxext6 libxrender-dev libglib2.0-0 sudo wget vim
 WORKDIR /opt
-RUN wget https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh && \
-	sh Anaconda3-2022.10-Linux-x86_64.sh -b -p /opt/anaconda3 && \
+RUN wget https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_64.sh && \
+	sh Anaconda3-2019.10-Linux-x86_64.sh -b -p /opt/anaconda3 && \
 	rm -f Anaconda3-2022.10-Linux-x86_64.sh
 
 ENV PATH=/opt/anaconda3/bin:$PATH
@@ -21,7 +22,10 @@ RUN pip install --upgrade pip && \
 	pip install catboost && \
 	pip install category_encoders && \
 	pip install hyperopt && \
-	pip install hpsklearn
+	pip install hpsklearn && \
+	pip install keras && \
+	pip install scipy && \
+	pip install tensorflow-gpu==2.1
 
 WORKDIR /
 CMD ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root", "--LabApp.token=''"]
